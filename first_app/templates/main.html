@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+        <title>MainPage</title>
+    </head>
+    <body>
+        <div class="header">
+            <div>
+                <h1 id="mainheading">Hi {{curr_user.full_name}}</h1>
+            </div>
+            <div>
+                <a  href="/logout">Logout</a>
+                
+            </div>
+           
+        </div>
+        
+        {%if messages%}
+            <ul class="messages">
+                {%for message in messages%}
+                    <li {% if message.tags%} class="{{message.tags}}"{% endif %}>{{message}}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class='pagecontent'>
+            <div>
+                <h3>Here are the organisations you may join</h3>
+                {%for org in all_orgs%}  
+                <h3><a href="/org/display_details/{{org.id}}">{{org.name}}</a></h3>
+                <p>Members: {{org.members.count}}</p>
+                <p>{{org.desc}}</p>
+                    {%if curr_user.id == org.creator.id%}
+                        <form action="/org/delete/{{org.id}}" method="POST"> 
+                            {% csrf_token%}
+                            <td><input type="submit" value="Delete"></td>
+                        </form>
+                    {%endif%}
+                {%endfor%}
+            </div>
+            <div  class="form">
+                <form action="/org/create" method="POST">
+                    {%csrf_token%}
+                    <h3>Create a new organisation</h3>
+                    <div class="field">
+                        <label>Org Name</label>
+                        <input type="text" name="name">
+                    </div>
+                    <br>
+                    <div class="field">
+                        <label>Description</label>
+                        <input type="text" name="desc">
+                    </div>
+                    <br>
+                    <input  id="submit" type="submit" value="Create">
+                </form>
+            </div>
+            
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,15 @@
+.login_registration{
+    display: flex;
+    justify-content: space-around;
+    background-color: aliceblue;
+    
+}
+.subcontent{
+    padding: 5px;
+    margin:5px;
+    
+}
+.content{
+    border:2px solid black;
+    height:fit-content;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OrgDetails</title>
+    </head>
+    <body>
+        <a href="/main">Dashboard</a>
+        <a href="/logout">Logout</a>
+        <h2>{{curr_org.name}}</h2>
+        {%if curr_user not in  all_members%}
+            <form action="/org/join_group/{{curr_org.id}}" method="POST"> 
+                {% csrf_token%}
+            <td><input type="submit" value="Join Group"></td>
+            </form>
+        {% else %}
+            <form action="/org/leave_group/{{curr_org.id}}" method="POST"> 
+                {% csrf_token%}
+            <td><input type="submit" value="Leave Group"></td>
+            </form>
+        {%endif%}
+        <p>{{curr_org.desc}}</p>
+        <br>
+        {%if curr_user.id  != curr_org.creator.id%}
+            <p>Created By: {{curr_org.creator.full_name}}</p>
+        {% else %}
+            <p>Created By: You</p>
+        {%endif%}
+        <p>Members:</p>
+        {%for member in all_members%}
+            <p>{{member.full_name}}</p>
+        {%endfor%}
+    </body>
+</html>
